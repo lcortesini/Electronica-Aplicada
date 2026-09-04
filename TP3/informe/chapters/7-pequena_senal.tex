@@ -23,19 +23,14 @@ En la figura~\ref{crkt:pequena_senal} se presenta el circuito equivalente de peq
 
 A partir de la física del semiconductor, la resistencia dinámica de la juntura base-emisor polarizada en directa es:
 \begin{equation}
-  r_e' = \frac{V_T}{I_{CQ}}
+  r_e = \frac{V_T}{I_{CQ}}
   \label{eq:re_prima}
 \end{equation}
 donde $V_T = k T / q \approx 25.0\mV$ representa el potencial térmico a temperatura ambiente de laboratorio ($T \approx 290\Kelvin$).
 
-Tomando el valor de corriente de reposo medido en el laboratorio ($I_{CQ} = 7.683\mA$):7
-\begin{equation}
-  r_e' = \frac{25.0\mV}{7.683\mA} \approx 3.254\ohm
-\end{equation}
-
 La resistencia dinámica de entrada del transistor en emisor común ($h_{ie}$) resulta:
 \begin{equation}
-  h_{ie} \approx (\beta + 1) \cdot r_e' \approx h_{fe} \cdot \frac{V_T}{I_{CQ}} = 284 \cdot \frac{25.0\mV}{7.683\mA} \approx 924.08\ohm
+  h_{ie}  \approx h_{fe} \cdot \frac{V_T}{I_{CQ}} = 284 \cdot \frac{25.0\mV}{7.683\mA} \approx 924.08\ohm
   \label{eq:hie_calculo}
 \end{equation}
 y la ganancia de corriente en cortocircuito es $h_{fe} = \beta = 284$.
