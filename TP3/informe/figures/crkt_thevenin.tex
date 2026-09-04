@@ -1,18 +1,18 @@
 \begin{circuitikz}[scale=0.95, transform shape]
   % Malla Thévenin de base
   \draw (0,0) node[ground] {}
-    to[battery1, l=$V_{BB}$] (0,2.5)
+    to[battery1,invert, l=$V_{BB}$] (0,2.5)
     to[R, l=$R_B$, i=$I_{BQ}$] (2.8,2.5)
     to[short] (3.6,2.5) node[npn, anchor=B] (Q1) {};
   \node[right=4pt] at (Q1.right) {$Q_1$};
 
   % Colector
-  \draw (Q1.C) to[R, l_=$R_C$, i_<=$I_{CQ}$] (3.6,4.5) node[above] {$V_{CC}$};
+  \draw (Q1.C) to[R, l_=$R_C$, i_<=$I_{CQ}$] (Q1.C |- 0,5) node[vcc] {$V_{CC}$};
 
   % Emisor
-  \draw (Q1.E) to[R, l=$R_E$, i=$I_{EQ}$] (3.6,0) node[ground] {};
+  \draw (Q1.E) to[R, l=$R_E$, i=$I_{EQ}$] (Q1.E |- 0,0) node[ground] {};
 
   % Indicadores de tensión VBE y VCE
-  \draw[dashed, color=gray] (2.6,2.3) to[open, v=$V_{BE}$] (2.6,1.4);
-  \draw[dashed, color=gray] (4.4,3.2) to[open, v=$V_{CEQ}$] (4.4,1.4);
+  \draw[dashed, color=gray] (3.6,2.4) to[open, v<=$V_{BE}$] (4.3,1.5);
+  \draw[dashed, color=gray] (5.1,3.3) to[open, v^<=$V_{CEQ}$] (5,1.4);
 \end{circuitikz}

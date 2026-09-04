@@ -5,13 +5,13 @@
     to[R, l=$R_S$, *-] (2.2,2.5) coordinate (vi_node)
     to[short, -o] (2.2,2.5);
 
-  \draw (0,0) to[short] (2.2,0) node[ground] {};
-  \draw (0,2.5) to[short, *-o] (0,3.2) node[above] {Osc. CH1 ($v_s$)};
-  \draw (vi_node) to[short, *-o] (2.2,3.2) node[above] {Osc. CH2 ($v_i$)};
+  \draw (0,0) to[short] (2.2,0) ;
+  \draw (0,2.5) to[short, *-o] (0,3.2) node[above] {CH1 ($v_s$)};
+  \draw (vi_node) to[short, *-o] (2.2,3.2) node[above] {CH2 ($v_i$)};
 
   % Bloque amplificador
   \draw (2.7, -0.5) rectangle (5.5, 3.0);
-  \node at (4.1, 1.25) [align=center] {Amplificador\\Emisor Común\\($Z_i, A_v$)};
+  \node at (4.1, 1.25) [align=center] {Amplificador\\Emisor Común};
 
   \draw (vi_node) to[short] (2.7, 2.5);
   \draw (2.2, 0) to[short] (2.7, 0);

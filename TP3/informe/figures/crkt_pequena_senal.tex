@@ -1,11 +1,11 @@
 \begin{circuitikz}[scale=0.9, transform shape]
   % Terminal de entrada
   \draw (0,0) node[ground] {}
-    to[open, v^<=$v_i$] (0,2.5)
+    to[open, v^>=$v_i$] (0,2.5)
     to[short, o-*] (1.5,2.5) coordinate (in_node);
 
   % Resistencia RB = R1 // R2
-  \draw (in_node) to[R, l=$R_B$, *-*] (1.5,0) node[ground] {};
+  \draw (in_node) to[R, l=$R_B$, -] (1.5,0) node[ground] {};
 
   % Modelo híbrido del transistor
   \draw (in_node) to[short] (3.0,2.5)
@@ -13,17 +13,19 @@
 
   % Fuente dependiente de corriente de colector
   \draw (5.5,0) node[ground] {}
-    to[cI, l=$h_{fe} i_b$] (5.5,2.5)
-    to[short, -*] (7.0,2.5) coordinate (c_node);
+    to[cisourceAM, l=$h_{fe} i_b$] (5.5,2.5)
+    to[short, -] (7.0,2.5) coordinate (c_node);
 
   % Resistencia de colector RC
-  \draw (7.0,2.5) to[R, l=$R_C$, *-*] (7.0,0) node[ground] {};
+  \draw (7.0,2.5) to[R, l=$R_C$, -] (7.0,0) node[ground] {};
 
   % Resistencia de carga RL
   \draw (c_node) to[short] (8.5,2.5) coordinate (l_node)
-    to[R, l=$R_L$, *-*] (8.5,0) node[ground] {};
+    to[R, l=$R_L$, -] (8.5,0) node[ground] {};
 
-  % Terminal de salida
-  \draw (l_node) to[short, -o] (9.5,2.5) node[above] {$v_L$};
-  \draw (9.5,0) to[open, v^<=$v_L$] (9.5,2.5);
+   % 1. Dibujamos el terminal de salida
+  \draw (l_node) to[short, -o] (9.5,2.5) node[above] {$v_L$} coordinate (out_node);
+
+  % 2. Colocamos la masa en el punto inferior y medimos la tensión en abierto hacia arriba
+  \draw (9.5,0) node[ground] {} to[open, v_>=$v_L$] (out_node);
 \end{circuitikz}

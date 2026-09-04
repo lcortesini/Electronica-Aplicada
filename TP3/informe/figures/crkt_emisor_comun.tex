@@ -1,31 +1,31 @@
 \begin{circuitikz}[scale=0.95, transform shape]
   % Referencia de masa
   \draw (0,0) node[ground] {}
-    to[sV, l=$v_s$] (0,2.5)
-    to[R, l=$R_s$] (1.8,2.5)
-    to[C, l=$C_1$, -*] (3.2,2.5) coordinate (base_node);
+    to[sV, l=$v_s$] (0,3)
+    to[R, l=$R_s$] (1.8,3)
+    to[C, l=$C_1$, -*] (3.5,3) coordinate (base_node);
 
   % Divisor resistivo de entrada
-  \draw (3.2,5) node[above] {$V_{CC}$}
-    to[R, l=$R_2$, *-*] (base_node)
-    to[R, l=$R_1$, *-*] (3.2,0) node[ground] {};
+  \draw (3.5,6.5) node[vcc] {$V_{CC}$} coordinate (vcc_node)
+    to[R, l=$R_2$, -*] (base_node)
+    to[R, l=$R_1$, *-] (3.5,0) node[ground] {};
 
   % Transistor BJT NPN
-  \draw (base_node) to[short] (4.2,2.5) node[npn, anchor=B] (Q1) {};
+  \draw (base_node) to[short] (4.2,3) node[npn, anchor=B] (Q1) {};
   \node[right=4pt] at (Q1.right) {$Q_1$ (BC547B)};
 
   % Malla de colector
-  \draw (Q1.C) to[short, *-*] (4.2,3.8) coordinate (coll_node)
-    to[R, l=$R_C$] (4.2,5) node[above] {$V_{CC}$};
+  \draw (Q1.C) to[short, -*] ++(0,0.25) coordinate (coll_node)
+    to[R, l_=$R_C$] ++(0,2) coordinate (aux) to [short] (vcc_node |- aux);
 
   % Malla de emisor con capacitor de desacoplo
-  \draw (Q1.E) to[short, *-*] (4.2,1.6) coordinate (emit_node);
-  \draw (emit_node) to[R, l=$R_E$] (4.2,0) node[ground] {};
-  \draw (emit_node) to[short] (5.6,1.6)
-    to[C, l=$C_E$] (5.6,0) node[ground] {};
+  \draw (Q1.E) to[short, -*] ++(0,-0.5) coordinate (emit_node);
+  \draw (emit_node) to[R, l=$R_E$] (5,0) node[ground] {};
+\draw (emit_node) to[short] ++(1.5,0) coordinate(aux)
+      to[C, l=$C_E$] (aux |- 0,0) node[ground] {};
 
   % Red de acoplo de salida y carga
-  \draw (coll_node) to[C, l=$C_2$] (6.8,3.8) coordinate (out_node)
-    to[short, -o] (8,3.8) node[above] {$v_L$};
-  \draw (out_node) to[R, l=$R_L$, *-] (6.8,0) node[ground] {};
+  \draw (coll_node) to[C, l=$C_2$] ++(4,0) coordinate (out_node)
+    to[short, -o] ++(1,0) node[above] {$v_L$};
+  \draw (out_node) to[R, l=$R_L$, *-] (9,0) node[ground] {};
 \end{circuitikz}
