@@ -1,0 +1,87 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{utf8}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{\textbf{TP4 -- Electrónica Aplicada}\\ \large Análisis y Diseño de Etapa de Acondicionamiento (Colector Común)}
+\author{Electrónica Aplicada}
+\date{04/08}
+
+\begin{document}
+\maketitle
+
+\section{Planteo del Problema y Topología}
+Se requiere interponer una etapa de acondicionamiento entre un micrófono ($V_s = 200\,\text{mV}_{\text{RMS}}$, $r_s = 10\,\text{k}\Omega$) y un equipo de grabación ($r_i = 10\,\text{k}\Omega$) conectado mediante un cable de 30 metros[span_0](start_span)[span_0](end_span).
+
+\begin{itemize}
+    \item \textbf{Criterio de Adaptación:} Para evitar la caída excesiva de tensión, la etapa debe poseer alta impedancia de entrada ($Z_i$ alta) y baja impedancia de salida ($Z_o$ baja)[span_1](start_span)[span_1](end_span). Por este motivo, se selecciona la configuración de \textbf{Colector Común (Seguidor de Emisor)}[span_2](start_span)[span_2](end_span).
+\end{itemize}
+
+\section{Cálculos de Diseño ($h_{fe} = \beta = 300$)}
+
+\subsection{Punto de Operación en Reposo}
+\begin{itemize}
+    \item $V_i \approx V_o \implies A_V \approx 1$ (No se requiere ganancia de tensión)[span_3](start_span)[span_3](end_span).
+    \item Corriente mínima de colector en reposo ($I_{CQ}$) para evitar recortes en la carga:
+    \[
+    I_{CQ} \ge \frac{\sqrt{2} \cdot 200\,\text{mV}_{\text{RMS}}}{10\,\text{k}\Omega} = \frac{282.84\,\text{mV}}{10\,\text{k}\Omega} = 28.28\,\mu\text{A} \approx 30\,\mu\text{A}
+    \]
+    Por razones de estabilidad e inmunidad al ruido, se adopta: $I_{CQ} = 1\,\text{mA}$[span_4](start_span)[span_4](end_span).
+    \item Tensión de alimentación: $V_{CC} = 5\,\text{V}$[span_5](start_span)[span_5](end_span).
+    \item Transistor seleccionado: \textbf{BC548} con ganancia típica $\beta = h_{fe} = 300$[span_6](start_span)[span_6](end_span).
+\end{itemize}
+
+\subsection{Determinación de Resistencias de Polarización}
+\begin{align*}
+V_E &\ge \sqrt{2} \cdot 200\,\text{mV}_{\text{RMS}} \approx 280\,\text{mV}_p \implies \text{Se adopta } V_E = 1\,\text{V} \\[0.5em]
+R_E &= \frac{V_E}{I_{CQ}} = \frac{1\,\text{V}}{1\,\text{mA}} = 1\,\text{k}\Omega \\[0.5em]
+R_B &= \beta \cdot \frac{R_E}{10} = \frac{300 \cdot 1\,\text{k}\Omega}{10} = 30\,\text{k}\Omega \\[0.5em]
+V_{BB} &= I_{BQ} R_B + V_{BE} + I_{EQ} R_E = I_{CQ}(1.1 R_E) + 0.7\,\text{V} = 1.8\,\text{V}
+\end{align*}
+
+Cálculo del divisor de tensión en la base ($R_1$ y $R_2$):
+\begin{align*}
+R_1 &= \frac{R_B}{\frac{V_{BB}}{V_{CC}}} = \frac{30\,\text{k}\Omega}{\frac{1.8\,\text{V}}{5\,\text{V}}} = 83.33\,\text{k}\Omega \implies R_1 \approx 47\,\text{k}\Omega \text{ (valor comercial/ajustado)} \\[0.5em]
+R_2 &= \frac{R_B}{1 - \frac{V_{BB}}{V_{CC}}} = \frac{30\,\text{k}\Omega}{1 - 0.36} = 46.875\,\text{k}\Omega \implies R_2 \approx 82\,\text{k}\Omega \text{ (valor comercial/ajustado)}
+\end{align*}
+
+\subsection{Análisis Dinámico e Impedancias}
+\begin{itemize}
+    \item Capacitores elegidos: $C_1 = 47\,\mu\text{F}$[span_7](start_span)[span_7](end_span)[span_8](start_span)[span_8](end_span), $C_2(\text{carga}) = 100\,\text{nF}$[span_9](start_span)[span_9](end_span).
+    \item Parámetro híbrido: $h_{ie} = h_{fe} \cdot \frac{25\,\text{mV}}{I_{CQ}} = 300 \cdot \frac{25\,\text{mV}}{1\,\text{mA}} = 7.5\,\text{k}\Omega$[span_10](start_span)[span_10](end_span).
+\end{itemize}
+
+\textbf{Impedancia de Entrada ($Z_i$):}
+\[
+Z_i = R_B \parallel \left[ h_{ie} + (R_E \parallel R_L)(h_{fe} + 1) \right]
+\]
+\[
+Z_i = 30\,\text{k}\Omega \parallel \left[ 7.5\,\text{k}\Omega + (1\,\text{k}\Omega \parallel 10\,\text{k}\Omega)(301) \right] = 27.10\,\text{k}\Omega
+\]
+
+\textbf{Impedancia de Salida ($Z_o$):}
+\[
+Z_o = R_E \parallel \left[ h_{ib} + \frac{r_s \parallel R_B}{h_{fe} + 1} \right] \quad \text{donde } h_{ib} = \frac{25\,\text{mV}}{1\,\text{mA}} = 25\,\Omega
+\]
+\[
+Z_o = 1\,\text{k}\Omega \parallel \left[ 25\,\Omega + \frac{10\,\text{k}\Omega \parallel 30\,\text{k}\Omega}{301} \right] = 25\,\Omega
+\]
+
+\textbf{Línea de Carga y Operación en CC:}
+\[
+I_{CQ} = 1\,\text{mA}, \quad V_{CEQ} = V_{CC} - I_{CQ} R_E = 5\,\text{V} - 1\,\text{V} = 4\,\text{V}
+\]
+
+\section{Confirmación de Cálculos para $\beta = 284$}
+Para la verificación experimental con un transistor real cuya ganancia medida es $\beta = h_{fe} = 284$[span_11](start_span)[span_11](end_span):
+\begin{itemize}
+    \item $I_{CQ} = 1\,\text{mA}$, $V_{CC} = 5\,\text{V}$, $V_E = 1\,\text{V} \implies R_E = 1\,\text{k}\Omega$[span_12](start_span)[span_12](end_span).
+    \item $R_B = 284 \cdot \frac{1\,\text{k}\Omega}{10} = 28.4\,\text{k}\Omega$[span_13](start_span)[span_13](end_span).
+    \item $V_{BB} = I_{CQ}(1.1 R_E) + 0.7\,\text{V} = 1.8\,\text{V}$[span_14](start_span)[span_14](end_span).
+    \item $R_1 = \frac{28.4\,\text{k}\Omega}{\frac{1.8}{5}} = 78.888\,\text{k}\Omega \implies \mathbf{R_1 = 82\,\text{k}\Omega}$[span_15](start_span)[span_15](end_span).
+    \item $R_2 = \frac{28.4\,\text{k}\Omega}{1 - \frac{1.8}{5}} = 44.375\,\text{k}\Omega \implies \mathbf{R_2 = 43\,\text{k}\Omega}$[span_16](start_span)[span_16](end_span).
+\end{itemize}
+
+\end{document}
